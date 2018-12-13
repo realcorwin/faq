@@ -2,6 +2,7 @@ package dik.faq.csv;
 
 import dik.faq.model.Question;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,7 +31,8 @@ public class CsvReaderImpl implements CsvReader {
     @Override
     public List<Question> getQuestions() throws IOException {
 
-        Path path = Paths.get("csvFilePath");
+        File file = new File(this.getClass().getResource(csvFilePath).getFile());
+        Path path = Paths.get(String.valueOf(file));
         if (Files.exists(path)) {
 
             List<String> lines = Files.readAllLines(path);
