@@ -22,15 +22,12 @@ public class CsvReaderImpl implements CsvReader {
 
     private static final String SEPARATOR = ";";
 
-    public CsvReaderImpl(@Value("${filePathRU}") String csvFilePathRU, @Value("${filePathEN}") String csvFilePathEN) {
-        this.csvFilePathRU = csvFilePathRU;
-        this.csvFilePathEN = csvFilePathEN;
-    }
-
     private String csvFilePathRU;
     private String csvFilePathEN;
 
-    public CsvReaderImpl() {
+    public CsvReaderImpl(@Value(value = "${filePathRU}") String csvFilePathRU, @Value("${filePathEN}") String csvFilePathEN) {
+        this.csvFilePathRU = csvFilePathRU;
+        this.csvFilePathEN = csvFilePathEN;
     }
 
     @Override
