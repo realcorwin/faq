@@ -1,37 +1,51 @@
 package dik.faq.csv;
 
 import dik.faq.model.Question;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
+@PropertySource("classpath:application.properties")
+@Component
 public class CsvReaderImpl implements CsvReader {
 
     private static final String SEPARATOR = ";";
 
-    private String csvFilePath;
-
-    public void setCsvFilePath(String csvFilePath) {
-        this.csvFilePath = csvFilePath;
+    public CsvReaderImpl(@Value("${filePathRU}") String csvFilePathRU, @Value("${filePathEN}") String csvFilePathEN) {
+        this.csvFilePathRU = csvFilePathRU;
+        this.csvFilePathEN = csvFilePathEN;
     }
 
-    public CsvReaderImpl(String csvFilePath) {
-        this.csvFilePath = csvFilePath;
-    }
+    private String csvFilePathRU;
+    private String csvFilePathEN;
 
     public CsvReaderImpl() {
     }
 
     @Override
-    public List<Question> getQuestions() throws IOException {
+    public List<Question> getQuestions(Locale locale) throws IOException {
+        if(locale.getDefault().equals(Locale.ENGLISH)){
+            return getLocaleQuestions(csvFilePathEN);
+        }
+        else {
+            return getLocaleQuestions(csvFilePathRU);
+        }
+    }
 
-        File file = new File(this.getClass().getResource(csvFilePath).getFile());
+    public List<Question> getLocaleQuestions(String csvFilePath) throws IOException {
+
+        File file = new File(URLDecoder.decode(String.valueOf(this.getClass().getResource(csvFilePath).getFile())));
         Path path = Paths.get(String.valueOf(file));
         if (Files.exists(path)) {
 
