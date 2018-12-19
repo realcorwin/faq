@@ -25,6 +25,14 @@ public class CsvReaderImpl implements CsvReader {
     private String csvFilePathRU;
     private String csvFilePathEN;
 
+    public String getCsvFilePathRU() {
+        return csvFilePathRU;
+    }
+
+    public String getCsvFilePathEN() {
+        return csvFilePathEN;
+    }
+
     public CsvReaderImpl(@Value(value = "${filePathRU}") String csvFilePathRU, @Value("${filePathEN}") String csvFilePathEN) {
         this.csvFilePathRU = csvFilePathRU;
         this.csvFilePathEN = csvFilePathEN;

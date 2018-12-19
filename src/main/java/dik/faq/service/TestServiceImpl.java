@@ -24,6 +24,18 @@ public class TestServiceImpl implements TestService {
 
     private CsvReader csvReader;
 
+    public double getTestAcceptance() {
+        return testAcceptance;
+    }
+
+    public MessageSource getMessageSource() {
+        return messageSource;
+    }
+
+    public CsvReader getCsvReader() {
+        return csvReader;
+    }
+
     public TestServiceImpl(@Value("${testAcceptance}") double testAcceptance, MessageSource messageSource, CsvReader csvReader) {
         this.testAcceptance = testAcceptance;
         this.messageSource = messageSource;
