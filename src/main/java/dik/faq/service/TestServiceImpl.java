@@ -7,6 +7,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
@@ -32,12 +33,22 @@ public class TestServiceImpl implements TestService {
     @Override
     public void executeTest() {
 
-        Locale locale = Locale.ENGLISH;
+        Locale locale = Locale.ROOT;
 
         try(Scanner sc = new Scanner(System.in)) {
 
             System.out.println("Please choose your language!\nПожалуйста выберите ваш язык!\nEN or RU");
-            locale.setDefault(getLocale(sc.nextLine().toLowerCase()));
+
+            switch (sc.nextLine().toLowerCase()){
+                case "en":
+                    locale = Locale.forLanguageTag("en-US");
+                    break;
+                case "ru":
+                    locale = Locale.forLanguageTag("ru-RU");
+                    break;
+                default:
+                    locale = Locale.getDefault();
+            }
 
             List<Question> questions = csvReader.getQuestions(locale);
 
@@ -57,21 +68,6 @@ public class TestServiceImpl implements TestService {
         catch (Exception ex){
             ex.printStackTrace();
         }
-    }
-
-    private Locale getLocale(String localeS){
-        Locale locale = null;
-        switch (localeS){
-            case "en":
-                locale = Locale.ENGLISH;
-                break;
-            case "ru":
-                locale = Locale.getDefault();
-                break;
-            default:
-                locale = Locale.getDefault();
-        }
-        return locale;
     }
 
     private String getFullName(Scanner sc, Locale locale) {

@@ -32,7 +32,7 @@ public class CsvReaderImpl implements CsvReader {
 
     @Override
     public List<Question> getQuestions(Locale locale) throws IOException {
-        if(locale.getDefault().equals(Locale.ENGLISH)){
+        if(locale.equals(Locale.forLanguageTag("en-US"))){
             return getLocaleQuestions(csvFilePathEN);
         }
         else {
