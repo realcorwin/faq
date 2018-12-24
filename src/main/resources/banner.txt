@@ -1,0 +1,17 @@
+
+DDDDDDDDDDDDD      IIIIIIIIIIKKKKKKKKK    KKKKKKK
+D::::::::::::DDD   I::::::::IK:::::::K    K:::::K
+D:::::::::::::::DD I::::::::IK:::::::K    K:::::K
+DDD:::::DDDDD:::::DII::::::IIK:::::::K   K::::::K
+  D:::::D    D:::::D I::::I  KK::::::K  K:::::KKK
+  D:::::D     D:::::DI::::I    K:::::K K:::::K
+  D:::::D     D:::::DI::::I    K::::::K:::::K
+  D:::::D     D:::::DI::::I    K:::::::::::K
+  D:::::D     D:::::DI::::I    K:::::::::::K
+  D:::::D     D:::::DI::::I    K::::::K:::::K
+  D:::::D     D:::::DI::::I    K:::::K K:::::K
+  D:::::D    D:::::D I::::I  KK::::::K  K:::::KKK
+DDD:::::DDDDD:::::DII::::::IIK:::::::K   K::::::K
+D:::::::::::::::DD I::::::::IK:::::::K    K:::::K
+D::::::::::::DDD   I::::::::IK:::::::K    K:::::K
+DDDDDDDDDDDDD      IIIIIIIIIIKKKKKKKKK    KKKKKKK

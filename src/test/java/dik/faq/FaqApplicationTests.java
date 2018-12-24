@@ -21,8 +21,7 @@ public class FaqApplicationTests {
 
     @Test
     public void testCsvReader() {
-        Assert.assertEquals(csvReader.getCsvFilePathEN(), "/faq/faqEN.csv");
-        Assert.assertEquals(csvReader.getCsvFilePathRU(), "/faq/faqRU.csv");
+        Assert.assertEquals(csvReader.getFilesPath(), "RU:/faq/faqRU.csv,EN:/faq/faqEN.csv");
     }
 
     @Test
