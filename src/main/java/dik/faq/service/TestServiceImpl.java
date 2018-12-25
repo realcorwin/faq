@@ -2,18 +2,16 @@ package dik.faq.service;
 
 import dik.faq.csv.CsvReader;
 import dik.faq.model.Question;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-@PropertySource("classpath:application.properties")
-@Service
+@Component
+@ConfigurationProperties("application")
 public class TestServiceImpl implements TestService {
 
     private int count;
@@ -28,6 +26,11 @@ public class TestServiceImpl implements TestService {
         return testAcceptance;
     }
 
+    public void setTestAcceptance(double testAcceptance) {
+        this.testAcceptance = testAcceptance;
+    }
+
+
     public MessageSource getMessageSource() {
         return messageSource;
     }
@@ -36,8 +39,7 @@ public class TestServiceImpl implements TestService {
         return csvReader;
     }
 
-    public TestServiceImpl(@Value("${testAcceptance}") double testAcceptance, MessageSource messageSource, CsvReader csvReader) {
-        this.testAcceptance = testAcceptance;
+    public TestServiceImpl(MessageSource messageSource, CsvReader csvReader) {
         this.messageSource = messageSource;
         this.csvReader = csvReader;
     }

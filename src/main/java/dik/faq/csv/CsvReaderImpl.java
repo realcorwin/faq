@@ -1,8 +1,7 @@
 package dik.faq.csv;
 
 import dik.faq.model.Question;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -11,40 +10,42 @@ import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.stream.Collectors;
 
-@PropertySource("classpath:application.properties")
 @Component
+@ConfigurationProperties("application")
 public class CsvReaderImpl implements CsvReader {
 
     private static final String SEPARATOR = ";";
 
-    private String csvFilePathRU;
-    private String csvFilePathEN;
+    private String filesPath;
 
-    public String getCsvFilePathRU() {
-        return csvFilePathRU;
+    public String getFilesPath() {
+        return filesPath;
     }
 
-    public String getCsvFilePathEN() {
-        return csvFilePathEN;
-    }
-
-    public CsvReaderImpl(@Value(value = "${filePathRU}") String csvFilePathRU, @Value("${filePathEN}") String csvFilePathEN) {
-        this.csvFilePathRU = csvFilePathRU;
-        this.csvFilePathEN = csvFilePathEN;
+    public void setFilesPath(String filesPath) {
+        this.filesPath = filesPath;
     }
 
     @Override
     public List<Question> getQuestions(Locale locale) throws IOException {
-        if(locale.equals(Locale.forLanguageTag("en-US"))){
-            return getLocaleQuestions(csvFilePathEN);
+        return getLocaleQuestions(getFilePathFromLocale(locale));
+    }
+
+    private String getFilePathFromLocale(Locale locale) {
+        String [] filesPathM = filesPath.split(",");
+        Map<String, String> pathMap = new HashMap<>();
+        for(String path : filesPathM){
+            String [] pathTMP = path.split(":");
+            pathMap.put(pathTMP[0].toLowerCase(), pathTMP[1]);
+        }
+        if(locale.equals(Locale.forLanguageTag("en-US"))) {
+            return pathMap.get("en");
         }
         else {
-            return getLocaleQuestions(csvFilePathRU);
+            return pathMap.get("ru");
         }
     }
 
