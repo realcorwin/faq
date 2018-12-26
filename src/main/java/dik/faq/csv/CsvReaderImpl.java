@@ -3,7 +3,6 @@ package dik.faq.csv;
 import dik.faq.model.Question;
 import dik.faq.properties.ApplicationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -43,12 +42,9 @@ public class CsvReaderImpl implements CsvReader {
             String [] pathTMP = path.split(":");
             pathMap.put(pathTMP[0].toLowerCase(), pathTMP[1]);
         }
-        if(locale.equals(Locale.forLanguageTag("en-US"))) {
-            return pathMap.get("en");
-        }
-        else {
-            return pathMap.get("ru");
-        }
+
+        String lang = locale.getLanguage();
+        return pathMap.get((lang == null || lang.isEmpty())? "ru": lang.toLowerCase());
     }
 
     public List<Question> getLocaleQuestions(String csvFilePath) throws IOException {
