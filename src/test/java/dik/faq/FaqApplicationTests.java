@@ -21,13 +21,13 @@ public class FaqApplicationTests {
 
     @Test
     public void testCsvReader() {
-        Assert.assertEquals(csvReader.getFilesPath(), "RU:/faq/faqRU.csv,EN:/faq/faqEN.csv");
+        Assert.assertEquals(csvReader.getApplicationProperties().getFilesPath(), "RU:/faq/faqRU.csv,EN:/faq/faqEN.csv");
     }
 
     @Test
     public void testTestServiceImpl() {
         Assert.assertNotNull(testService.getCsvReader());
         Assert.assertNotNull(testService.getMessageSource());
-        Assert.assertEquals(testService.getTestAcceptance(), 0.8, 0);
+        Assert.assertEquals(testService.getApplicationProperties().getTestAcceptance(), 0.8, 0);
     }
 }

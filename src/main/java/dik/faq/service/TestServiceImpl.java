@@ -2,34 +2,38 @@ package dik.faq.service;
 
 import dik.faq.csv.CsvReader;
 import dik.faq.model.Question;
+import dik.faq.properties.ApplicationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
-@Component
-@ConfigurationProperties("application")
+//@Component
+//@ConfigurationProperties("application")
+@Service
 public class TestServiceImpl implements TestService {
 
     private int count;
 
-    private double testAcceptance;
+    @Autowired
+    private ApplicationProperties applicationProperties;
+
+    public ApplicationProperties getApplicationProperties() {
+        return applicationProperties;
+    }
+
+    public void setApplicationProperties(ApplicationProperties applicationProperties) {
+        this.applicationProperties = applicationProperties;
+    }
 
     private MessageSource messageSource;
 
     private CsvReader csvReader;
-
-    public double getTestAcceptance() {
-        return testAcceptance;
-    }
-
-    public void setTestAcceptance(double testAcceptance) {
-        this.testAcceptance = testAcceptance;
-    }
-
 
     public MessageSource getMessageSource() {
         return messageSource;
@@ -95,7 +99,7 @@ public class TestServiceImpl implements TestService {
     }
 
     private void resultsOutput(List<Question> questions, String name, Locale locale) {
-        if (count >= (int)(questions.size() * testAcceptance)) {
+        if (count >= (int)(questions.size() * applicationProperties.getTestAcceptance())) {
             System.out.println(messageSource.getMessage("faq.good", new String[]{name}, locale));
         } else {
             System.out.println(messageSource.getMessage("faq.bad", new String[]{name}, locale));
