@@ -9,8 +9,9 @@ import org.springframework.context.ApplicationContext;
 public class FaqApplication {
 
     public static void main(String[] args) {
-        ApplicationContext context = SpringApplication.run(FaqApplication.class, args);
-        TestServiceImpl test = context.getBean(TestServiceImpl.class);
-        test.executeTest();
+        SpringApplication.run(FaqApplication.class, args);
+        // ApplicationContext context = SpringApplication.run(FaqApplication.class, args);
+        // TestServiceImpl test = context.getBean(TestServiceImpl.class);
+        // test.executeTest();
     }
 }

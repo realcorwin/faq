@@ -35,6 +35,8 @@ public class TestServiceImpl implements TestService {
         return messageSource;
     }
 
+    private Scanner sc;
+
     public TestServiceImpl(MessageSource messageSource, CsvReader csvReader) {
         this.messageSource = messageSource;
         this.csvReader = csvReader;
@@ -49,7 +51,10 @@ public class TestServiceImpl implements TestService {
 
         // String languageTag = "ru-RU";
 
-        try(Scanner sc = new Scanner(System.in)) {
+        if(sc == null){
+            sc = new Scanner(System.in);
+        }
+        try {
 
             System.out.println("List of available languages - Список доступных языков");
             for (String language : languagesForChoose.keySet()) {
