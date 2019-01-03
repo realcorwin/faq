@@ -1,3 +1,7 @@
 application:
   testAcceptance: 0.8
-  filesPath: RU:/faq/faqRU.csv,EN:/faq/faqEN.csv
+  filesPath: RU:/faq/faqRU.csv,EN:/faq/faqEN.csv,DE:/faq/faqDE.csv
+  languages:
+    EN: en-US
+    RU: ru-RU
+    DE: de-DE

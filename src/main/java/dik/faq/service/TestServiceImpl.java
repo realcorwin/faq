@@ -2,42 +2,40 @@ package dik.faq.service;
 
 import dik.faq.csv.CsvReader;
 import dik.faq.model.Question;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import dik.faq.properties.ApplicationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
 
-@Component
-@ConfigurationProperties("application")
+@Service
 public class TestServiceImpl implements TestService {
 
     private int count;
 
-    private double testAcceptance;
+    private Map<String, String> languagesForChoose = new HashMap<>();
+
+    @Autowired
+    private ApplicationProperties applicationProperties;
 
     private MessageSource messageSource;
 
     private CsvReader csvReader;
 
-    public double getTestAcceptance() {
-        return testAcceptance;
+    public CsvReader getCsvReader() {
+        return csvReader;
     }
 
-    public void setTestAcceptance(double testAcceptance) {
-        this.testAcceptance = testAcceptance;
+    public ApplicationProperties getApplicationProperties() {
+        return applicationProperties;
     }
-
 
     public MessageSource getMessageSource() {
         return messageSource;
     }
 
-    public CsvReader getCsvReader() {
-        return csvReader;
-    }
+    private Scanner sc;
 
     public TestServiceImpl(MessageSource messageSource, CsvReader csvReader) {
         this.messageSource = messageSource;
@@ -49,20 +47,25 @@ public class TestServiceImpl implements TestService {
 
         Locale locale = Locale.ROOT;
 
-        try(Scanner sc = new Scanner(System.in)) {
+        languagesForChoose = applicationProperties.getLanguages();
 
-            System.out.println("Please choose your language!\nПожалуйста выберите ваш язык!\nEN or RU");
+        // String languageTag = "ru-RU";
 
-            switch (sc.nextLine().toLowerCase()){
-                case "en":
-                    locale = Locale.forLanguageTag("en-US");
-                    break;
-                case "ru":
-                    locale = Locale.forLanguageTag("ru-RU");
-                    break;
-                default:
-                    locale = Locale.getDefault();
+        if(sc == null){
+            sc = new Scanner(System.in);
+        }
+        try {
+
+            System.out.println("List of available languages - Список доступных языков");
+            for (String language : languagesForChoose.keySet()) {
+                System.out.print(language + " / ");
             }
+
+            System.out.println("\nPlease choose your language!\nПожалуйста выберите ваш язык!");
+
+            // languageTag = Optional.ofNullable(languagesForChoose.get(sc.nextLine().toUpperCase())).orElse("ru-RU");
+
+            locale = Locale.forLanguageTag(Optional.ofNullable(languagesForChoose.get(sc.nextLine().toUpperCase())).orElse("ru-RU"));
 
             List<Question> questions = csvReader.getQuestions(locale);
 
@@ -95,7 +98,7 @@ public class TestServiceImpl implements TestService {
     }
 
     private void resultsOutput(List<Question> questions, String name, Locale locale) {
-        if (count >= (int)(questions.size() * testAcceptance)) {
+        if (count >= (int)(questions.size() * applicationProperties.getTestAcceptance())) {
             System.out.println(messageSource.getMessage("faq.good", new String[]{name}, locale));
         } else {
             System.out.println(messageSource.getMessage("faq.bad", new String[]{name}, locale));

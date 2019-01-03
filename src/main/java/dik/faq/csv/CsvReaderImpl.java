@@ -1,7 +1,8 @@
 package dik.faq.csv;
 
 import dik.faq.model.Question;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import dik.faq.properties.ApplicationProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -14,19 +15,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-@ConfigurationProperties("application")
 public class CsvReaderImpl implements CsvReader {
 
     private static final String SEPARATOR = ";";
 
-    private String filesPath;
+    @Autowired
+    private ApplicationProperties applicationProperties;
 
-    public String getFilesPath() {
-        return filesPath;
+    public ApplicationProperties getApplicationProperties() {
+        return applicationProperties;
     }
 
-    public void setFilesPath(String filesPath) {
-        this.filesPath = filesPath;
+    public void setApplicationProperties(ApplicationProperties applicationProperties) {
+        this.applicationProperties = applicationProperties;
     }
 
     @Override
@@ -35,18 +36,15 @@ public class CsvReaderImpl implements CsvReader {
     }
 
     private String getFilePathFromLocale(Locale locale) {
-        String [] filesPathM = filesPath.split(",");
+        String [] filesPathM = applicationProperties.getFilesPath().split(",");
         Map<String, String> pathMap = new HashMap<>();
         for(String path : filesPathM){
             String [] pathTMP = path.split(":");
             pathMap.put(pathTMP[0].toLowerCase(), pathTMP[1]);
         }
-        if(locale.equals(Locale.forLanguageTag("en-US"))) {
-            return pathMap.get("en");
-        }
-        else {
-            return pathMap.get("ru");
-        }
+
+        String lang = locale.getLanguage();
+        return pathMap.get((lang == null || lang.isEmpty())? "ru": lang.toLowerCase());
     }
 
     public List<Question> getLocaleQuestions(String csvFilePath) throws IOException {
